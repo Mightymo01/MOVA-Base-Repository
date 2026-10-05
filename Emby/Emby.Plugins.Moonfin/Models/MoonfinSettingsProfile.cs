@@ -64,6 +64,7 @@ namespace Emby.Plugins.Moonfin.Models
         [JsonPropertyName("mediaBarLibraryIds")] public List<string>? MediaBarLibraryIds { get; set; }
         [JsonPropertyName("mediaBarExcludedGenres")] public List<string>? MediaBarExcludedGenres { get; set; }
         [JsonPropertyName("seasonalSurprise")] public string? SeasonalSurprise { get; set; }
+        [JsonPropertyName("seasonalDensity")] public string? SeasonalDensity { get; set; }
         [JsonPropertyName("backdropEnabled")] public bool? BackdropEnabled { get; set; }
         [JsonPropertyName("homeRowsImageTypeOverride")] public bool? HomeRowsImageTypeOverride { get; set; }
         [JsonPropertyName("homeRowsStyle")] public string? HomeRowsStyle { get; set; }

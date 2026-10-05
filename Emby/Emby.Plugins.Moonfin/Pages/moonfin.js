@@ -2059,6 +2059,7 @@ define(['baseView', 'loading', 'emby-input', 'emby-button', 'emby-checkbox', 'em
             setNullableBoolSelect(view, '#DefaultEpisodePreviewEnabled', defaults.episodePreviewEnabled);
             setNullableBoolSelect(view, '#DefaultPreviewAudioEnabled', defaults.previewAudioEnabled);
             setSelectValue(view, '#DefaultSeasonalSurprise', defaults.seasonalSurprise, 'Configured surprise');
+            setSelectValue(view, '#DefaultSeasonalDensity', defaults.seasonalDensity, 'Configured density');
 
             setSelectValue(view, '#DefaultResumeSubtractDuration', defaults.resumeSubtractDuration != null ? String(defaults.resumeSubtractDuration) : '', 'Configured rewind');
             setSelectValue(view, '#DefaultUnpauseRewindDuration', defaults.unpauseRewindDuration != null ? String(defaults.unpauseRewindDuration) : '', 'Configured rewind');
@@ -2365,6 +2366,7 @@ define(['baseView', 'loading', 'emby-input', 'emby-button', 'emby-checkbox', 'em
             d.episodePreviewEnabled = getNullableBoolSelect(view, '#DefaultEpisodePreviewEnabled');
             d.previewAudioEnabled = getNullableBoolSelect(view, '#DefaultPreviewAudioEnabled');
             d.seasonalSurprise = view.querySelector('#DefaultSeasonalSurprise').value || null;
+            d.seasonalDensity = view.querySelector('#DefaultSeasonalDensity').value || null;
 
             // Clients store this one as text, unlike the millisecond fields below.
             d.resumeSubtractDuration = view.querySelector('#DefaultResumeSubtractDuration').value || null;

@@ -204,6 +204,9 @@ public class MoonfinSettingsProfile
     [JsonPropertyName("seasonalSurprise")]
     public string? SeasonalSurprise { get; set; }
 
+    [JsonPropertyName("seasonalDensity")]
+    public string? SeasonalDensity { get; set; }
+
     [JsonPropertyName("backdropEnabled")]
     public bool? BackdropEnabled { get; set; }
 

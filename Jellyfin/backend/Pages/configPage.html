@@ -2598,6 +2598,15 @@
                                     <option value="leaves">Falling Leaves</option>
                                 </select>
                             </div>
+                            <div class="inputContainer">
+                                <label class="inputLabel inputLabelUnfocused" for="DefaultSeasonalDensity">Seasonal Effects Density</label>
+                                <select id="DefaultSeasonalDensity" is="emby-select">
+                                    <option value="">Not set (user decides)</option>
+                                    <option value="light">Light</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="heavy">Heavy</option>
+                                </select>
+                            </div>
 
                             <h4 style="margin: 1.5em 0 0.5em; font-size: 0.95em; color: #00a4dc;">Theme Music</h4>
                             <div class="inputContainer">
@@ -6149,6 +6158,7 @@
                     setNullableBoolSelect('#DefaultEpisodePreviewEnabled', defaults.episodePreviewEnabled);
                     setNullableBoolSelect('#DefaultPreviewAudioEnabled', defaults.previewAudioEnabled);
                     setSelectValue('#DefaultSeasonalSurprise', defaults.seasonalSurprise, 'Configured surprise');
+                    setSelectValue('#DefaultSeasonalDensity', defaults.seasonalDensity, 'Configured density');
 
                     setSelectValue('#DefaultHomeRowsStyle', defaults.homeRowsStyle, 'Configured style');
                     setNullableBoolSelect('#DefaultModernCardsOnMyMediaRow', defaults.modernCardsOnMyMediaRow);
@@ -6958,6 +6968,7 @@
                         config.DefaultUserSettings.episodePreviewEnabled = getNullableBoolSelect('#DefaultEpisodePreviewEnabled');
                         config.DefaultUserSettings.previewAudioEnabled = getNullableBoolSelect('#DefaultPreviewAudioEnabled');
                         config.DefaultUserSettings.seasonalSurprise = document.querySelector('#DefaultSeasonalSurprise').value || null;
+                        config.DefaultUserSettings.seasonalDensity = document.querySelector('#DefaultSeasonalDensity').value || null;
 
                         // Clients store this one as text, unlike the millisecond fields below.
                         config.DefaultUserSettings.resumeSubtractDuration = document.querySelector('#DefaultResumeSubtractDuration').value || null;
