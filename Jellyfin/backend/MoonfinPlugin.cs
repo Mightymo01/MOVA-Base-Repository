@@ -56,10 +56,10 @@ public class MoonfinPlugin : BasePlugin<PluginConfiguration>, IHasWebPages
     }
 
     /// <inheritdoc />
-    public override string Name => "Moonbase";
+    public override string Name => "MOVABase";
 
     /// <inheritdoc />
-    public override string Description => "Moonbase is the Moonfin server plugin providing shared infrastructure for every Moonfin client (web, mobile, desktop, and TV): cross-device settings sync with per-device profiles and admin defaults, hosting for the Moonfin Web app at /Moonfin/Web/, a theme editor with custom theme APIs, ratings integrations (MDBList and TMDB), and Seerr proxy with single sign-on. It also powers retro game libraries via EmulatorJS, with keyless libretro box art plus server-hosted cores and save sync.";
+    public override string Description => "MOVA Base is the server-side plugin for the MOVA ecosystem, providing shared settings, administration, themes, integrations, and server-hosted services for MOVA clients.";
 
     /// <inheritdoc />
     public override Guid Id => Guid.Parse("8c5d0e91-4f2a-4b6d-9e3f-1a7c8d9e0f2b");
