@@ -475,6 +475,12 @@ public class PluginConfiguration : BasePluginConfiguration
 
         return value;
     }
+
+    /// <summary>
+    /// Profile settings (by JSON name, e.g. mediaBarSourceType) that the server controls.
+    /// A locked setting always resolves to the admin default; user and device values are ignored.
+    /// </summary>
+    public System.Collections.Generic.List<string> LockedSettings { get; set; } = new();
 }
 
 /// <summary>

@@ -171,7 +171,8 @@ public class MoonfinController : ControllerBase
             TmdbAvailable = !string.IsNullOrWhiteSpace(config?.TmdbApiKey),
             MessagesSupported = true,
             RecommendationsSupported = config?.RecommendationsProviderEnabled ?? true,
-            DefaultSettings = config?.DefaultUserSettings
+            DefaultSettings = config?.DefaultUserSettings,
+            LockedSettings = new System.Collections.Generic.List<string>(MoonfinSettingsService.GetLockedKeys(config)),
         });
     }
 
@@ -1758,6 +1759,9 @@ public class MoonfinPingResponse
 
     [JsonPropertyName("defaultSettings")]
     public MoonfinSettingsProfile? DefaultSettings { get; set; }
+
+    [JsonPropertyName("lockedSettings")]
+    public System.Collections.Generic.List<string>? LockedSettings { get; set; }
 
     // Legacy field names so clients from before the Seerr rename keep reading these.
     [JsonPropertyName("jellyseerrEnabled")]

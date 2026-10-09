@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.Threading.Channels;
@@ -23,6 +24,28 @@ public class MoonfinSettingsService
     // couple of hundred of them, so the lookup is cached rather than repeated per request.
     private static readonly System.Reflection.PropertyInfo[] ProfileProps =
         typeof(MoonfinSettingsProfile).GetProperties();
+
+    // Settings an admin may lock, keyed by JSON name. Phase 1: Media Bar only.
+    private static readonly Dictionary<string, System.Reflection.PropertyInfo> LockableProps =
+        ProfileProps
+            .Where(p => p.Name.StartsWith("MediaBar", StringComparison.Ordinal)
+                     || p.Name == "DesktopMediaBarProvider")
+            .ToDictionary(
+                p => ((System.Text.Json.Serialization.JsonPropertyNameAttribute?)Attribute.GetCustomAttribute(
+                        p, typeof(System.Text.Json.Serialization.JsonPropertyNameAttribute)))?.Name
+                     ?? System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(p.Name),
+                p => p,
+                StringComparer.Ordinal);
+
+    /// <summary>Configured lock keys that are valid and lockable (unknown names are ignored).</summary>
+    public static IReadOnlyList<string> GetLockedKeys(PluginConfiguration? config) =>
+        (config?.LockedSettings ?? new List<string>())
+            .Where(k => LockableProps.ContainsKey(k))
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+
+    private static List<System.Reflection.PropertyInfo> GetLockedProps(PluginConfiguration? config) =>
+        GetLockedKeys(config).Select(k => LockableProps[k]).ToList();
 
     private static readonly System.Reflection.PropertyInfo[] UserSettingsProps =
         typeof(MoonfinUserSettings).GetProperties();
@@ -185,6 +208,13 @@ public class MoonfinSettingsService
             {
                 prop.SetValue(resolved, value);
             }
+        }
+
+        // Server locks: a locked key always takes the admin value, whatever the user or device set.
+        var pluginConfig = MoonfinPlugin.Instance?.Configuration;
+        foreach (var prop in GetLockedProps(pluginConfig))
+        {
+            prop.SetValue(resolved, adminDefaults != null ? prop.GetValue(adminDefaults) : null);
         }
 
         var homeLayout = ResolveHomeLayout(deviceProfile, global, adminDefaults);
@@ -1306,6 +1336,12 @@ public class MoonfinSettingsService
         if (profile.MdblistApiKey == config.MdblistApiKey)
         {
             profile.MdblistApiKey = null;
+        }
+
+        // Locked settings are inherited from the admin defaults, never stored per user.
+        foreach (var prop in GetLockedProps(config))
+        {
+            prop.SetValue(profile, null);
         }
     }
 
