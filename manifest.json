@@ -6,7 +6,7 @@
     "description": "MOVABase is the MOVA server plugin for Jellyfin, powering settings sync, the MOVA Web app at /MOVA/Web/, a built-in theme editor with custom theme APIs, media bar and ratings integrations, and Seerr proxy/SSO with admin defaults and broadcasts across MOVA clients.",
     "owner": "RadicalMuffinMan",
     "category": "General",
-    "imageUrl": "https://raw.githubusercontent.com/Mightymo01/MOVA-Base-Repository/master/Jellyfin/backend/assets/mova-catalogue.jpg"
+    "imageUrl": "https://raw.githubusercontent.com/Mightymo01/MOVA-Base-Repository/master/Jellyfin/backend/assets/mova-catalogue.jpg",
     "versions": [
      {
         "version": "2.3.0.0",
