@@ -1,4 +1,4 @@
-name: Build
+﻿name: Build
 
 on:
   push:
@@ -21,25 +21,9 @@ jobs:
       - name: Read Jellyfin version and ABI
         id: jf_meta
         run: |
-          # MoonfinVersion is the three-part source of AssemblyVersion, hence the trailing .0
-          VERSION="$(grep -oPm1 '(?<=<MoonfinVersion>)[^<]+' Jellyfin/backend/Moonfin.Server.csproj).0"
-          ABI=$(grep 'Jellyfin.Controller' Jellyfin/backend/Moonfin.Server.csproj | grep -oP 'Version="\K[^"]+')
-
-          # build.sh's default version is a second copy of the same number.
-          SCRIPT_VERSION=$(grep -oPm1 'VERSION="\$\{1:-\K[^}]+' Jellyfin/build.sh)
-          if [ "$SCRIPT_VERSION" != "$VERSION" ]; then
-            echo "::error::Version drift: build.sh says ${SCRIPT_VERSION}, the csproj says ${VERSION}."
-            exit 1
-          fi
-
-          # build.sh hardcodes the ABI on purpose. Deriving it from the PackageReference would
-          # let a routine package bump raise the minimum server version and strand 10.10 installs.
-          SCRIPT_ABI=$(grep -oPm1 'TARGET_ABI="\$\{2:-\K[^}]+' Jellyfin/build.sh)
-          if [ "$SCRIPT_ABI" != "$ABI" ]; then
-            echo "::error::Target ABI drift: build.sh says ${SCRIPT_ABI}, Jellyfin.Controller says ${ABI}."
-            echo "::error::Change both together, and only when you mean to drop older servers."
-            exit 1
-          fi
+          # MovaBaseVersion is the three-part source of AssemblyVersion, hence the trailing .0
+          VERSION="$(grep -oPm1 '(?<=<MovaBaseVersion>)[^<]+' Jellyfin/backend/Movabase.Server.csproj).0"
+          ABI=$(grep 'Jellyfin.Controller' Jellyfin/backend/Movabase.Server.csproj | grep -oP 'Version="\K[^"]+')
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "abi=${ABI}.0" >> "$GITHUB_OUTPUT"
@@ -56,13 +40,17 @@ jobs:
           set -o pipefail
           rm -rf Jellyfin/backend/bin/Release Jellyfin/backend/obj/Release
           rm -rf Jellyfin/tools/verify-plugin/bin/Release Jellyfin/tools/verify-plugin/obj/Release
-          dotnet publish Jellyfin/backend/Moonfin.Server.csproj \
+          VERSION="${{ steps.jf_meta.outputs.version }}"
+          dotnet publish Jellyfin/backend/Movabase.Server.csproj \
             -c Release \
+            -p:AssemblyVersion="$VERSION" \
+            -p:FileVersion="$VERSION" \
+            -p:Version="${VERSION%.0}" \
             -o Jellyfin/backend/bin/Release/net8.0/publish \
             2>&1 | tee "${{ runner.temp }}/backend-build.log"
           dotnet run --project Jellyfin/tools/verify-plugin/VerifyPlugin.csproj \
             -c Release -- \
-            Jellyfin/backend/bin/Release/net8.0/publish/Moonfin.Server.dll \
+            Jellyfin/backend/bin/Release/net8.0/publish/Movabase.Server.dll \
             2>&1 | tee -a "${{ runner.temp }}/backend-build.log"
 
       - name: Build Emby plugin
@@ -155,7 +143,7 @@ jobs:
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           mkdir -p jellyfin-release
-          cp Jellyfin/backend/bin/Release/net8.0/publish/Moonfin.Server.dll jellyfin-release/
+          cp Jellyfin/backend/bin/Release/net8.0/publish/Movabase.Server.dll jellyfin-release/
           cp Jellyfin/backend/bin/Release/net8.0/publish/SharpCompress.dll jellyfin-release/
 
           if [ -f Jellyfin/frontend/index.html ]; then
@@ -179,11 +167,11 @@ jobs:
             "version": "${VERSION}",
             "status": "Active",
             "autoUpdate": true,
-            "assemblies": ["Moonfin.Server.dll"]
+            "assemblies": ["Movabase.Server.dll"]
           }
           EOF
 
-          ZIP_NAME="Moonfin.Server-${VERSION}.zip"
+          ZIP_NAME="Movabase.Server-${VERSION}.zip"
           cd jellyfin-release && zip -r "../${ZIP_NAME}" . && cd ..
           CHECKSUM=$(md5sum "$ZIP_NAME" | awk '{print toupper($1)}')
           echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"

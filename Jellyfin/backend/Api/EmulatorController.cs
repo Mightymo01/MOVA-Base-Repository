@@ -52,7 +52,7 @@ public class EmulatorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetPlayer()
     {
-        using var stream = Assembly.GetManifestResourceStream("Moonfin.Server.EmulatorJS.player.html");
+        using var stream = Assembly.GetManifestResourceStream("Movabase.Server.EmulatorJS.player.html");
         if (stream == null)
         {
             return NotFound(new { Error = "player.html not found" });
@@ -85,7 +85,7 @@ public class EmulatorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetMoonfinBridge()
     {
-        using var stream = Assembly.GetManifestResourceStream("Moonfin.Server.EmulatorJS.moonfin-bridge.js");
+        using var stream = Assembly.GetManifestResourceStream("Movabase.Server.EmulatorJS.moonfin-bridge.js");
         if (stream == null)
         {
             return NotFound(new { Error = "moonfin-bridge.js not found" });

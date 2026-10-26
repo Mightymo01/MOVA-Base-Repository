@@ -2,7 +2,7 @@ using System.Reflection;
 
 if (args.Length is < 1 or > 2)
 {
-    Console.Error.WriteLine("Usage: VerifyPlugin <path-to-Moonfin.Server.dll> [expected-version]");
+    Console.Error.WriteLine("Usage: VerifyPlugin <path-to-Movabase.Server.dll> [expected-version]");
     return 2;
 }
 
@@ -15,10 +15,10 @@ if (!File.Exists(assemblyPath))
 
 var requiredResources = new[]
 {
-    "Moonfin.Server.Pages.configPage.html",
-    "Moonfin.Server.Web.loader.js",
-    "Moonfin.Server.Web.inject.html",
-    "Moonfin.Server.EmulatorJS.player.html",
+    "Movabase.Server.Pages.configPage.html",
+    "Movabase.Server.Web.loader.js",
+    "Movabase.Server.Web.inject.html",
+    "Movabase.Server.EmulatorJS.player.html",
 };
 
 try

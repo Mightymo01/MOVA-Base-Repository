@@ -13,7 +13,7 @@ public class EmulatorResourcesTests
     [Fact]
     public void PlayerShell_LoadsEmbeddedBridgeBeforeTheEmulatorLoader()
     {
-        var player = ReadResource("Moonfin.Server.EmulatorJS.player.html");
+        var player = ReadResource("Movabase.Server.EmulatorJS.player.html");
 
         Assert.Contains("<script src=\"moonfin-bridge.js\"></script>", player, StringComparison.Ordinal);
         Assert.True(
@@ -23,7 +23,7 @@ public class EmulatorResourcesTests
     [Fact]
     public void MoonfinBridge_IsEmbeddedWithTheNativeHostEntryPoints()
     {
-        var bridge = ReadResource("Moonfin.Server.EmulatorJS.moonfin-bridge.js");
+        var bridge = ReadResource("Movabase.Server.EmulatorJS.moonfin-bridge.js");
 
         foreach (var entryPoint in new[]
         {

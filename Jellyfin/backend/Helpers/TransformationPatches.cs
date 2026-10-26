@@ -21,7 +21,7 @@ public static class TransformationPatches
         }
 
         var stream = Assembly.GetExecutingAssembly()
-            .GetManifestResourceStream("Moonfin.Server.Web.inject.html");
+            .GetManifestResourceStream("Movabase.Server.Web.inject.html");
 
         if (stream == null)
         {

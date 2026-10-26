@@ -3,7 +3,7 @@
 # Usage: .\build.ps1 [-Version "1.1.0.0"] [-TargetAbi "10.10.0"] [-SourceUrl "https://..."] [-SkipManifestUpdate]
 
 param(
-    [string]$Version = "2.3.0.0",
+    [string]$Version = "2.3.3.0",
     [string]$TargetAbi = "10.10.0",
     [string]$SourceUrl = "",
     [switch]$SkipManifestUpdate
@@ -33,7 +33,7 @@ if (-not (Test-Path $FrontendIndex)) {
 # assembly produced from an older project or checkout path.
 Write-Host ""
 Write-Host "--- Building server plugin ---"
-$CsprojPath = Join-Path $BackendDir "Moonfin.Server.csproj"
+$CsprojPath = Join-Path $BackendDir "Movabase.Server.csproj"
 $PublishDir = Join-Path $BackendDir "bin\Release\net8.0\publish"
 $ReleaseBinDir = Join-Path $BackendDir "bin\Release"
 $ReleaseObjDir = Join-Path $BackendDir "obj\Release"
@@ -66,7 +66,7 @@ if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed" }
 
 Write-Host ""
 Write-Host "--- Verifying server plugin ---"
-dotnet run --project $VerifyProject -c Release -- (Join-Path $PublishDir "Moonfin.Server.dll") $Version
+dotnet run --project $VerifyProject -c Release -- (Join-Path $PublishDir "Movabase.Server.dll") $Version
 if ($LASTEXITCODE -ne 0) { throw "plugin verification failed" }
 
 # Create release directory
@@ -75,7 +75,7 @@ if (Test-Path $ReleaseDir) { Remove-Item $ReleaseDir -Recurse -Force }
 New-Item -ItemType Directory -Path $ReleaseDir | Out-Null
 
 # Copy the plugin DLL plus its bundled dependencies
-$DllPath = Join-Path $PublishDir "Moonfin.Server.dll"
+$DllPath = Join-Path $PublishDir "Movabase.Server.dll"
 Copy-Item $DllPath $ReleaseDir
 $SharpCompressPath = Join-Path $PublishDir "SharpCompress.dll"
 Copy-Item $SharpCompressPath $ReleaseDir
@@ -112,14 +112,14 @@ $Meta = [ordered]@{
     version = $Version
     status = "Active"
     autoUpdate = $true
-    assemblies = @("Moonfin.Server.dll")
+    assemblies = @("Movabase.Server.dll")
 }
 $MetaJson = ConvertTo-Json -InputObject $Meta -Depth 10
 $MetaPath = Join-Path $ReleaseDir "meta.json"
 [System.IO.File]::WriteAllText($MetaPath, $MetaJson, (New-Object System.Text.UTF8Encoding $false))
 
 # Create the ZIP file
-$ZipName = "Moonfin.Server-${Version}.zip"
+$ZipName = "Movabase.Server-${Version}.zip"
 $ZipPath = Join-Path $RootDir $ZipName
 if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
 Compress-Archive -Path (Join-Path $ReleaseDir "*") -DestinationPath $ZipPath

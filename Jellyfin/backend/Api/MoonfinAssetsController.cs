@@ -32,7 +32,7 @@ public sealed class MoonfinAssetsController : ControllerBase
                 continue;
             }
 
-            // Resource name after ".assets." e.g. "Moonfin.Server.assets.IMDb.png" -> "IMDb.png"
+            // Resource name after ".assets." e.g. "Movabase.Server.assets.IMDb.png" -> "IMDb.png"
             var file = n.Substring(idx + ".assets.".Length);
             if (!dict.ContainsKey(file))
             {

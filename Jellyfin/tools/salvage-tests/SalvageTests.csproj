@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\backend\Moonfin.Server.csproj" />
+    <ProjectReference Include="..\..\backend\Movabase.Server.csproj" />
   </ItemGroup>
 
 </Project>

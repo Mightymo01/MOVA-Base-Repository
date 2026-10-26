@@ -90,7 +90,7 @@ public class MoonfinWebController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetLoaderJs()
     {
-        var resourceName = "Moonfin.Server.Web.loader.js";
+        var resourceName = "Movabase.Server.Web.loader.js";
         var stream = _assembly.GetManifestResourceStream(resourceName);
 
         if (stream == null)
