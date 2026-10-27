@@ -152,7 +152,7 @@ public class MoonfinPlugin : BasePlugin<PluginConfiguration>, IHasWebPages
             new PluginPageInfo
             {
                 Name = Name,
-                EmbeddedResourcePath = GetType().Namespace + ".Pages.configPage.html",
+                EmbeddedResourcePath = "Movabase.Server.Pages.configPage.html",
                 EnableInMainMenu = true,
                 // This slot only takes a Material Icons ligature. The Moonfin mark comes from
                 // the stylesheet in Web/inject.html, so the crescent is what shows without it.
